@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "start": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist && node -r tsconfig-paths/register dist/server.js",
+    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
+    "watch": "tsc -w",
+    "dev": "nodemon",
+    "prod": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/server.js",
+    "test": "jest --forceExit --detectOpenHandles",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
     "prepare": "husky install"
   },
   "keywords": [],
@@ -13,16 +19,43 @@
   "devDependencies": {
     "@commitlint/cli": "^13.2.0",
     "@commitlint/config-conventional": "^13.2.0",
+    "@types/cors": "^2.8.12",
+    "@types/dotenv-safe": "^8.1.2",
+    "@types/express": "^4.17.13",
+    "@types/helmet": "^4.0.0",
+    "@types/hpp": "^0.2.2",
+    "@types/jest": "^27.0.2",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^16.10.2",
+    "@types/supertest": "^2.0.11",
+    "@types/swagger-jsdoc": "^6.0.1",
+    "@types/swagger-ui-express": "^4.1.3",
+    "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.2",
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "prettier": "^2.4.1",
+    "tsconfig-paths": "^3.11.0",
+    "tscpaths": "^0.0.9",
+    "tslint": "^5.20.1",
+    "tslint-config-airbnb": "^5.11.2"
   },
   "dependencies": {
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
     "cors": "^2.8.5",
     "dotenv-safe": "^8.2.0",
+    "envalid": "^7.2.1",
     "express": "^4.17.1",
     "helmet": "^4.6.0",
+    "hpp": "^0.2.3",
     "jest": "^27.2.4",
     "mongoose": "^6.0.8",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "reflect-metadata": "^0.1.13",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^9.1.1",
+    "typescript": "^3.9.10"
   }
 }
