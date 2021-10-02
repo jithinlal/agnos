@@ -6,6 +6,8 @@ function validateEnv() {
 		NODE_ENV: str(),
 		PORT: port(),
 		MONGO_PATH: str(),
+		SECRET: str(),
+		REDIS_URL: str(),
 	});
 }
 
