@@ -3,6 +3,7 @@ import { FoodTypeDto } from '~/dtos/food-type.dto';
 import AdminService from '~/services/admin.service';
 import { TaxDto } from '~/dtos/tax.dto';
 import { ItemDto } from '~/dtos/item.dto';
+import { BundleDto } from '~/dtos/bundle.dto';
 
 class AdminController {
 	private adminService = new AdminService();
@@ -123,6 +124,23 @@ class AdminController {
 			const result = await this.adminService.deleteItem(id, _id);
 
 			res.status(200).json({ data: result });
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public createBundle = async (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) => {
+		const bundleData: BundleDto = req.body;
+		const { _id } = req.user;
+
+		try {
+			const bundle = await this.adminService.addBundle(bundleData, _id);
+
+			res.status(200).json({ data: bundle });
 		} catch (error) {
 			next(error);
 		}

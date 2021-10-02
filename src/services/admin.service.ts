@@ -19,6 +19,10 @@ import {
 	deleteOneItem,
 } from '~/data-layer/mongoose/item.data-layer';
 import { IItem } from '~/interfaces/item.interface';
+import { BundleDto } from '~/dtos/bundle.dto';
+import { createBundle } from '~/data-layer/mongoose/bundle.data-layer';
+import { createBundleItem } from '~/data-layer/mongoose/bundle-item.data-layer';
+import { IBundle } from '~/interfaces/bundle.interface';
 
 class AdminService {
 	public async createFoodType(
@@ -81,6 +85,37 @@ class AdminService {
 
 	public async deleteItem(id: string, userId: string) {
 		return deleteOneItem({ args: { _id: id, createdBy: userId } });
+	}
+
+	public async addBundle(bundleData: BundleDto, id: string): Promise<IBundle> {
+		if (isEmpty(bundleData)) {
+			throw new HttpException(400, 'No valid bundle data found');
+		}
+
+		let bundleItemIds: string[] = [];
+		let items: string[] = [];
+		for (let i = 0; i < bundleData.bundleItems.length; i++) {
+			const bundleDataItem = bundleData.bundleItems[i];
+			const bundleItem = await createBundleItem({
+				args: {
+					item: bundleDataItem.item,
+					quantity: bundleDataItem.quantity,
+					discount: bundleDataItem.discount,
+					createdBy: id,
+				},
+			});
+			bundleItemIds.push(bundleItem._id);
+			items.push(bundleDataItem.item);
+		}
+
+		return createBundle({
+			args: {
+				name: bundleData.name,
+				bundleItems: bundleItemIds,
+				items,
+				itemCount: bundleItemIds.length,
+			},
+		});
 	}
 }
 

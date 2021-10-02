@@ -8,6 +8,7 @@ import validationMiddleware from '~/middlewares/validation.middleware';
 import { FoodTypeDto } from '~/dtos/food-type.dto';
 import { TaxDto } from '~/dtos/tax.dto';
 import { ItemDto } from '~/dtos/item.dto';
+import { BundleDto } from '~/dtos/bundle.dto';
 
 class AdminRoute implements Route {
 	public path = '/admin';
@@ -107,6 +108,31 @@ class AdminRoute implements Route {
 		 *       description: tax deleted
 		 */
 
+		/**
+		 * @swagger
+		 * /admin/bundle:
+		 *  post:
+		 *    tags:
+		 *     - Admin
+		 *    description: create a new bundle
+		 *    parameters:
+		 *    - name: bundle name
+		 *      in: body
+		 *      type: string
+		 *      required: true
+		 *      description: name of the bundle
+		 *    - name: items
+		 *      in: body
+		 *      required: true
+		 *      description: array of bundle items with item id, discount and quanity
+		 *      type: array
+		 *    response:
+		 *     201:
+		 *       description: bundle created
+		 *     400:
+		 *       description: not all the data was given
+		 */
+
 		this.router.post(
 			`${this.path}/food-type`,
 			validationMiddleware(FoodTypeDto),
@@ -151,6 +177,13 @@ class AdminRoute implements Route {
 			authenticate,
 			grantAccess('delete', 'item'),
 			this.adminController.deleteItem
+		);
+		this.router.post(
+			`${this.path}/bundle`,
+			validationMiddleware(BundleDto),
+			authenticate,
+			grantAccess('create', 'bundle'),
+			this.adminController.createBundle
 		);
 	}
 }
