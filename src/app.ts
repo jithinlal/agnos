@@ -10,6 +10,15 @@ import swaggerUI, { SwaggerOptions } from 'swagger-ui-express';
 import { __PROD__ } from '~/constants';
 import Routes from '~/interfaces/routes.interface';
 import errorMiddleware from '~/middlewares/error.middleware';
+import { IUser } from '~/interfaces/user.interface';
+
+declare global {
+	namespace Express {
+		interface Request {
+			user: IUser;
+		}
+	}
+}
 
 class App {
 	public app: express.Application;

@@ -9,7 +9,7 @@ import {
 	findOneUser,
 	findUserAndUpdate,
 } from '~/data-layer/mongoose/user.data-layer';
-import { USER_TYPE } from '~/enums/user_type.enum';
+import { USER_TYPE } from '~/enums/user-type.enum';
 import { IUser } from '~/interfaces/user.interface';
 
 class AuthService {

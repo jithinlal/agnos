@@ -21,6 +21,13 @@ const findItems = ({
 		.lean();
 };
 
+const findItemById = (
+	id: string,
+	{ populateArgs = [] }: { populateArgs?: PopulateObjectInterface[] }
+) => {
+	return Item.findById(id).populate(populateArgs);
+};
+
 const paginateItems = ({
 	query = {},
 	options = {},
@@ -47,4 +54,4 @@ const deleteOneItem = ({
 	return Item.deleteOne(args);
 };
 
-export { findItems, deleteOneItem, createItem, paginateItems };
+export { findItems, deleteOneItem, createItem, paginateItems, findItemById };
