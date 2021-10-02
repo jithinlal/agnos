@@ -4,5 +4,6 @@ declare namespace NodeJS {
     NODE_ENV: string;
     PORT: string;
     MONGO_PATH: string;
+    SECRET: string;
   }
 }
