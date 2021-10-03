@@ -10,7 +10,7 @@ const fulFillOrder = async (id: string) => {
 	});
 
 	/**
-	 * TODO => notification is sent to the user
+	 * TODO => notification is sent to the user from here once his/her order is complete
 	 */
 
 	return output;

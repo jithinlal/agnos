@@ -10,7 +10,7 @@ orderQueue.process(async (job) => {
 	try {
 		switch (orderStatus) {
 			case ORDER_STATUS.PENDING: {
-				setTimeout(() => fulFillOrder(id), 10000);
+				setTimeout(() => fulFillOrder(id), 10000); // an order will be fulfilled after 10s, just an assumption
 
 				return Promise.resolve({ done: true });
 			}

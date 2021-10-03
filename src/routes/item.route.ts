@@ -65,6 +65,23 @@ class ItemRoute implements Route {
 		 *       description: returns the cart total amount
 		 */
 
+		/**
+		 * @swagger
+		 * /item/order:
+		 *  post:
+		 *    tags:
+		 *     - Item
+		 *    description: order items
+		 *    parameters:
+		 *    - name: items
+		 *      in: body
+		 *      type: array
+		 *      description: array of item ids
+		 *    response:
+		 *     200:
+		 *       description: returns the order detail object
+		 */
+
 		this.router.get(`${this.path}`, this.itemController.fetchItems);
 		this.router.post(
 			`${this.path}/cart`,

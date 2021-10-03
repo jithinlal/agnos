@@ -30,6 +30,7 @@ class ItemService {
 			options,
 		});
 
+		// calculates the total price based on price and tax and then add that on to the item object
 		const finalItemDocs = items.docs.map((item: IItem) => {
 			const total = (
 				item.price +
@@ -54,6 +55,7 @@ class ItemService {
 	}
 
 	private async _findTotalCost(cartItems: OrderDto): Promise<number> {
+		// create a mapping of the order items
 		const itemMapping: any = {};
 		for (let i = 0; i < cartItems.orderItems.length; i++) {
 			const orderItem = cartItems.orderItems[i];
@@ -66,6 +68,7 @@ class ItemService {
 			return 0;
 		}
 
+		// if there is only 1 item, simply returns it's price it doesn't belong to any bundle
 		if (items.length === 1) {
 			const item = await findItemById(items[0], {
 				populateArgs: [{ path: 'tax' }],
@@ -80,6 +83,7 @@ class ItemService {
 			}
 		}
 
+		// check if the items create any bundle
 		const bundle = await findOneBundle({
 			args: {
 				items: { $in: items },
@@ -93,16 +97,22 @@ class ItemService {
 			],
 		});
 
+		// if not then calculate the price for each individual items
 		if (!bundle) {
 			return await this._nonBundleCartTotal(items, itemMapping);
 		}
 
+		// if it constitutes a bundle then check if the quantity also matches
+		// for eg: 2 burger and a coffee etc.
 		let bundleMapping: any = {};
 		for (let i = 0; i < bundle.bundleItems.length; i++) {
 			const bundleItem = bundle.bundleItems[i] as IBundleItem;
 			bundleMapping[(bundleItem.item as IItem)._id] = bundleItem.quantity;
 		}
 
+		// if the order is above a bundle then after the bundle discount is added
+		// we need to also calculate the left over pricing treating the
+		// leftovers as individual items
 		let leftOverMapping: any = {};
 		for (let i = 0; i < cartItems.orderItems.length; i++) {
 			const orderItem = cartItems.orderItems[i];
@@ -114,6 +124,7 @@ class ItemService {
 			}
 		}
 
+		// bundle price is being calculated
 		let cartTotal = 0;
 		(bundle.bundleItems as IBundleItem[]).forEach((bundleItem: IBundleItem) => {
 			let price = (bundleItem.item as IItem).price;
@@ -124,6 +135,7 @@ class ItemService {
 			cartTotal += discountedPrice + (discountedPrice * tax) / 100;
 		});
 
+		// leftover price is being calculated
 		let leftOverItems = Object.keys(leftOverMapping);
 		for (let i = 0; i < leftOverItems.length; i++) {
 			const leftOverItem = leftOverItems[i];
@@ -197,6 +209,8 @@ class ItemService {
 			},
 		});
 
+		// order is pushed to a queue, and upon verification and satisfaction
+		// a notification will be sent to the customer
 		orderQueue.add({ orderStatus: ORDER_STATUS.PENDING, id: order._id });
 
 		return order;
