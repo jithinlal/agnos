@@ -8,3 +8,5 @@ Files needed
 # Developed using clean code architecture
 
 redis is used for queue
+
+swagger documentation can be seen using /swagger api.
