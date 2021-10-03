@@ -1,7 +1,6 @@
-import AuthRoute from '~/routes/auth.route';
-
 require('dotenv-safe').config();
 import App from '~/app';
+import AuthRoute from '~/routes/auth.route';
 import validateEnv from '~/utils/validateEnv';
 import IndexRoute from '~/routes/index.route';
 import FoodTypeRoute from '~/routes/food-type.route';

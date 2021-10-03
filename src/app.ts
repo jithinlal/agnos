@@ -47,6 +47,12 @@ class App {
 		return this.app;
 	}
 
+	public disconnect() {
+		mongoose.connection.close().then(() => {
+			return;
+		});
+	}
+
 	private connectToDatabase() {
 		const { MONGO_PATH, NODE_ENV } = process.env;
 
